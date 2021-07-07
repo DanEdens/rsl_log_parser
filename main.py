@@ -5,11 +5,11 @@ import time
 import paho.mqtt.client as paho
 
 ###
-# When a change occurs, this log gets output, it is retreived by tailing the log file
-# start.cmd
-# set log="%userprofile%\AppData\Local\Plarium\PlariumPlay\StandAloneApps\raid\242\log.txt"
-# Echo Tailing Raid Log file..
-# tail -f %log% | grep --line-buffered normalization | xargs -I {} python main.py {}
+# When a change occurs, this log gets output, it is retreived by tailing the log file and grep ing for "norm"
+# $ cat start.cmd
+# > set log="%userprofile%\AppData\Local\Plarium\PlariumPlay\StandAloneApps\raid\242\log.txt"
+# > Echo Tailing Raid Log file..
+# > tail -f %log% | grep --line-buffered normalization | xargs -I {} python main.py {}
 # "Full normalization mode set [Time: 6/25/2021 5:41:33 PM,
 # Resources: [Energy: 24.9111111111112], [Silver: 263430.073149072], [Token: 3.22583333333334], [Gem: 42],
 # [Arena3X3ShopCurrency:       1278], [Arena3x3Token: 5], [Orb_MagicLow: 20], [Orb_MagicMid: 9],
@@ -25,14 +25,20 @@ import paho.mqtt.client as paho
 # [Forge_DragonBoneEpic: 214], [Forge_GriffinFeatherRare: 211], [Forge_GriffinFeatherEpic: 1],
 # [DoomTowerGoldKey: 10], [DoomTowerSilverKey: 10]]"
 
+# If broker configured on server, pub results: raid/status/{key} {value}
 if os.environ.get('RAID_LOG_PUB', False):
     client = paho.Client('rsl_parser', clean_session=True)
     client.connect(os.environ.get("AWSIP"), int(os.environ.get("AWSPORT")))
 
 def main(x):
-    # print(x)
+    """Parses contents of piped log data"""
+
+    # Remove msg header, which is already in dictionary format
     input =  x[67:-1]
+
+    # Split dictionary
     string =  input.split(',')
+
     myvars = {}
     for each in string:
         name, var = each.partition(":")[::2]
@@ -42,7 +48,10 @@ def main(x):
             pass
         myvars[name[2:]] = var[:-1]
 
+    # Set current time
     timer = time.strftime("%H:%M.%S")
+
+    # Remove decimal place
     energy = myvars['Energy'].split('.')[0]
     silver = myvars['Silver'].split('.')[0]
 
@@ -50,7 +59,7 @@ def main(x):
         try:
             client.publish('status/raid/energy', energy, retain=True)
             client.publish('status/raid/silver', silver, retain=True)
-            #client.publish('status/raid/gems', myvars['Gem'], retain=True)
+            client.publish('status/raid/gems', myvars['Gem'], retain=True)
             client.publish('status/raid/time', timer, retain=True)
         except: pass
 
