@@ -30,6 +30,17 @@ if os.environ.get('RAID_LOG_PUB', False):
     client = paho.Client('rsl_parser', clean_session=True)
     client.connect(os.environ.get("AWSIP"), int(os.environ.get("AWSPORT")))
 
+
+def post(key, value):
+    if os.environ.get('RAID_LOG_PUB', False):
+        try:
+            print(key + ': %12s' % value)
+            client.publish(f'status/raid/{key}', value, retain=True)
+        except: pass
+    else:
+        print(key + ': %12s' % value)    
+
+
 def main(x):
     """Parses contents of piped log data"""
 
