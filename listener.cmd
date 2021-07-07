@@ -1,2 +1,4 @@
+@echo off
 set log="%userprofile%\AppData\Local\Plarium\PlariumPlay\StandAloneApps\raid\242\log.txt"
-tail -f %log% | grep normalization | python main.py
+Echo Tailing Raid Log file..
+tail -f %log% | grep --line-buffered normalization | xargs -I {} python main.py {}
