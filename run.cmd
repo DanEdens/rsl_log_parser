@@ -9,8 +9,7 @@
 
 :main
 set repodir="%cd%"
-pushd %userprofile%\AppData\Local\Plarium\PlariumPlay\StandAloneApps\raid\
-cd 2*
+pushd %userprofile%\AppData\Local\Plarium\PlariumPlay\StandAloneApps\raid\ && cd 2* || echo Locaton not found & echo Please download from "https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwjpqs6igZ7zAhVLa28EHUhUBM4YABABGgJqZg&ae=2&ohost=www.google.com&cid=CAESQOD2pUITy8B_h97U08UnJljXhYgczPBbH_Ye98vku4frJfwXunTcikCNmgRKHmWh2gUAXB6xfJSsroiEGV-LUE4&sig=AOD64_0dmS4L7dWkOWop7soNwGDAAB7eCQ&q=&nis=1&ved=2ahUKEwiMzcGigZ7zAhX_mmoFHQ-2CkkQqyQoAHoECAIQEw&adurl=" & goto:eof
 Echo Tailing Raid Log file..
 REM Only reacts to lines including text: "normalization"
 tail -f log.txt | grep --line-buffered normalization | xargs -I {} python %repodir%\__main__.py {}
