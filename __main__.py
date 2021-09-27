@@ -4,6 +4,7 @@ import os
 import time
 if os.environ.get('RAID_LOG_PUB', False):
     import paho.mqtt.client as paho
+    import socket
 
 ###
 # When a change occurs, this log gets output, it is retreived by tailing the log file and grep ing for "norm"
@@ -28,7 +29,7 @@ if os.environ.get('RAID_LOG_PUB', False):
 
 # If broker configured on server, pub results: raid/status/{key} {value}
 if os.environ.get('RAID_LOG_PUB', False):
-    client = paho.Client('rsl_parser', clean_session=True)
+    client = paho.Client('RSL_parser_' + str(socket.gethostname()), clean_session=True)
     client.connect(os.environ.get("AWSIP"), int(os.environ.get("AWSPORT")))
 
 
