@@ -2,7 +2,8 @@ import sys
 import subprocess
 import os
 import time
-import paho.mqtt.client as paho
+if os.environ.get('RAID_LOG_PUB', False):
+    import paho.mqtt.client as paho
 
 ###
 # When a change occurs, this log gets output, it is retreived by tailing the log file and grep ing for "norm"
