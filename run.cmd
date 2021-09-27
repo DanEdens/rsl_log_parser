@@ -9,10 +9,10 @@
 
 :main
 set repodir="%cd%"
-\245\log.txt"
 pushd %userprofile%\AppData\Local\Plarium\PlariumPlay\StandAloneApps\raid\
 cd 2*
 Echo Tailing Raid Log file..
+REM Only reacts to lines including text: "normalization"
 tail -f log.txt | grep --line-buffered normalization | xargs -I {} python %repodir%\__main__.py {}
 popd
 goto:eof
