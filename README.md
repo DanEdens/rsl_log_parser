@@ -7,13 +7,14 @@
 ##  Requirments:
 
   xargs, grep, tail are requried unix commands included with [Git Bash](https://git-scm.com/download/win) on Windows
+  Python 3
 
 
 
 ##  Python librays:
 
-   paho.mqtt
-
+   pip install paho.mqtt
+   
 
 # Description
 
