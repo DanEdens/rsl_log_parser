@@ -6,8 +6,8 @@
 
 ##  Requirments:
 
-  xargs, grep, tail are requried unix commands included with [Git Bash](https://git-scm.com/download/win) on Windows
-  Python 3
+  xargs, grep, tail are requried unix commands included with [Git Bash](https://git-scm.com/download/win) on Windows   
+  Python 3  
 
 
 
