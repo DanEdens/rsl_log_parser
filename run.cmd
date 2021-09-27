@@ -1,4 +1,4 @@
-:: Raid Shadow Legends PC clien Log parser.
+:: Raid Shadow Legends PC client Log parser.
 :: Created by Dan Edens
 :: Requirments:
 :: xargs, grep, tail are unix commands included with Git Bash on Windows
