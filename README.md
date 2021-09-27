@@ -6,7 +6,7 @@
 
 ##  Requirments:
 
-  xargs, grep, tail are requried unix commands included with Git Bash on Windows
+  xargs, grep, tail are requried unix commands included with [Git Bash](https://git-scm.com/download/win) on Windows
 
 
 
