@@ -48,18 +48,31 @@ def main(x):
     # Set current time
     timer = time.strftime("%H:%M.%S")
 
+    # Compare to previous, print values that have changed
+    if os.path.exists("file.txt"):
+        file = open("last.txt", "r")
+        file_lines = file.read()
+        bakvars = file_lines.split("\n")
+        diff1=set(bakvars) - set(myvars)
+        list_diff = list(diff1)
+    else:
+        list_diff = myvars
+    with open("last.txt", "w") as file:
+        file_lines = "\n".join(myvars)
+        file.write(file_lines)
+    
     # Remove decimal place
-    energy = myvars['Energy'].split('.')[0]
-    silver = myvars['Silver'].split('.')[0]
+    energy = list_diff['Energy'].split('.')[0]
+    silver = list_diff['Silver'].split('.')[0]
     # DreadhornPlatesRare = myvars['Forge_DreadhornPlatesRare'].split('.')[0]
-    DreadhornPlatesEpic = myvars['Forge_DreadhornPlatesEpic'].split('.')[0]
-    DreadhornPlatesLeg = myvars['Forge_DreadhornPlatesLeg'].split('.')[0]
+    DreadhornPlatesEpic = list_diff['Forge_DreadhornPlatesEpic'].split('.')[0]
+    DreadhornPlatesLeg = list_diff['Forge_DreadhornPlatesLeg'].split('.')[0]
 
     if os.environ.get('RAID_LOG_PUB', False):
         try:
             client.publish('status/raid/energy', energy, retain=True)
             client.publish('status/raid/silver', silver, retain=True)
-            client.publish('status/raid/gems', myvars['Gem'], retain=True)
+            client.publish('status/raid/gems', list_diff['Gem'], retain=True)
             client.publish('status/raid/time', timer, retain=True)
             # client.publish('status/raid/DreadhornPlatesRare', DreadhornPlatesRare, retain=True)
             client.publish('status/raid/DreadhornPlatesEpic', DreadhornPlatesEpic, retain=True)
