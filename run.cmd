@@ -7,12 +7,22 @@
 :: 1. logging  
 :: 2. paho.mqtt  
 
+
 :main
+@REM TODO, check requirements or open URL to install
 set repodir="%cd%"
 pushd %userprofile%\AppData\Local\Plarium\PlariumPlay\StandAloneApps\raid\ && cd 2* || goto:errmsg
 Echo Tailing Raid Log file..
-REM Only reacts to lines including text: "normalization"
-tail -f log.txt | grep --line-buffered normalization | xargs -I {} python %repodir%\__main__.py {}
+
+:gregstring
+set tmp="%1"
+IF %tmp% == "" (
+        set "Filter=normalization"
+    ) ELSE (
+        SET "Filter=%1"
+    )
+
+tail -f log.txt | grep --line-buffered %Filter% | xargs -I {} python %repodir%\__main__.py {}
 popd
 goto:eof
 

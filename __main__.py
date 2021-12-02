@@ -2,15 +2,19 @@ import sys
 import subprocess
 import os
 import time
-if os.environ.get('RAID_LOG_PUB', False):
-    import paho.mqtt.client as paho
-    import socket
 
+# _mqttPub = os.environ.get('RAID_LOG_PUB', False)
+_mqttPub = True
 
 # If broker configured on server, pub results: raid/status/{key} {value}
-if os.environ.get('RAID_LOG_PUB', False):
+if _mqttPub == True:
+    print('Mqtt Pub Enabled.')
+    import paho.mqtt.client as paho
+    import socket
     client = paho.Client('RSL_parser_' + str(socket.gethostname()), clean_session=True)
     client.connect(os.environ.get("AWSIP"), int(os.environ.get("AWSPORT")))
+
+
 
 
 def post(key, value):
@@ -47,6 +51,9 @@ def main(x):
     # Remove decimal place
     energy = myvars['Energy'].split('.')[0]
     silver = myvars['Silver'].split('.')[0]
+    # DreadhornPlatesRare = myvars['Forge_DreadhornPlatesRare'].split('.')[0]
+    DreadhornPlatesEpic = myvars['Forge_DreadhornPlatesEpic'].split('.')[0]
+    DreadhornPlatesLeg = myvars['Forge_DreadhornPlatesLeg'].split('.')[0]
 
     if os.environ.get('RAID_LOG_PUB', False):
         try:
@@ -54,6 +61,9 @@ def main(x):
             client.publish('status/raid/silver', silver, retain=True)
             client.publish('status/raid/gems', myvars['Gem'], retain=True)
             client.publish('status/raid/time', timer, retain=True)
+            # client.publish('status/raid/DreadhornPlatesRare', DreadhornPlatesRare, retain=True)
+            client.publish('status/raid/DreadhornPlatesEpic', DreadhornPlatesEpic, retain=True)
+            client.publish('status/raid/DreadhornPlatesLeg', DreadhornPlatesLeg, retain=True)
         except: pass
 
     print('------------------------------')
