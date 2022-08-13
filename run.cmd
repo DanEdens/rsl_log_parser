@@ -11,7 +11,7 @@
 :main
 @REM TODO, check requirements or open URL to install
 set repodir="%cd%"
-pushd %userprofile%\AppData\Local\Plarium\PlariumPlay\StandAloneApps\raid\ && cd 2* || goto:errmsg
+pushd %userprofile%\AppData\Local\PlariumPlay\StandAloneApps\raid\ && cd 2* || goto:errmsg
 Echo Tailing Raid Log file..
 
 :gregstring
